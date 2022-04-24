@@ -10,7 +10,7 @@ class MultilangAction extends Action
 {
     public function handle()
     {
-        $this->addAction(Action::BACKEND_CALL_ACTION, [$this, 'addBackendMenu']);
+        $this->addAction(Action::BACKEND_INIT, [$this, 'addBackendMenu']);
         //$this->addAction(Action::POSTS_FORM_RIGHT_ACTION, [$this, 'addSelectLangPost'], 5);
         $this->addAction(Action::INIT_ACTION, [$this, 'addConfigs']);
     }
