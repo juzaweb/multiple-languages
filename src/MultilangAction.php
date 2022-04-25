@@ -3,7 +3,7 @@
 namespace Juzaweb\Multilang;
 
 use Juzaweb\CMS\Abstracts\Action;
-use Juzaweb\Backend\Facades\HookAction;
+use Juzaweb\CMS\Facades\HookAction;
 use Juzaweb\CMS\Models\Language;
 
 class MultilangAction extends Action
