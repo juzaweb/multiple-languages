@@ -13,8 +13,9 @@
                 {{ Field::select(trans('cms::app.type'), 'mlla_type', [
                     'value' => $type,
                     'options' => [
-                        'session' => trans('mlla::content.session'),
-                        'subdomain' => trans('mlla::content.sub_domain'),
+                        'session' => trans('multilang::content.session'),
+                        'prefix' => trans('multilang::content.prefix'),
+                        'subdomain' => trans('multilang::content.sub_domain'),
                     ],
                 ]) }}
 
@@ -30,12 +31,12 @@
                         <tbody>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <a href="javascript:void(0)" id="add-subdomain">{{ trans('mlla::content.add_subdomain') }}</a>
+                                    <a href="javascript:void(0)" id="add-subdomain">{{ trans('multilang::content.add_subdomain') }}</a>
                                 </td>
                             </tr>
 
                             @foreach($subdomains as $subdomain)
-                                @component('mlla::components.subdomain_item', [
+                                @component('multilang::components.subdomain_item', [
                                     'marker' => '{marker}',
                                     'languages' => $languages,
                                     'item' => $subdomain,
@@ -55,7 +56,7 @@
     </div>
 
     <template id="subdomain-template">
-        @component('mlla::components.subdomain_item', [
+        @component('multilang::components.subdomain_item', [
             'marker' => '{marker}',
             'languages' => $languages,
         ])

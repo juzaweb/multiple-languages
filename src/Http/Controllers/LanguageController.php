@@ -4,8 +4,8 @@ namespace Juzaweb\Multilang\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Juzaweb\Backend\Http\Controllers\Backend\PageController;
-use Juzaweb\Multilang\Http\Datatables\LanguageDatatable;
 use Juzaweb\CMS\Models\Language;
+use Juzaweb\Multilang\Http\Datatables\LanguageDatatable;
 
 class LanguageController extends PageController
 {
@@ -14,7 +14,7 @@ class LanguageController extends PageController
         $title = trans('cms::app.languages');
         $dataTable = new LanguageDatatable();
 
-        return view('mlla::language', compact(
+        return view('multilang::language', compact(
             'title',
             'dataTable'
         ));

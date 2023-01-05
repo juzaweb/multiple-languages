@@ -1,4 +1,4 @@
-# Multi languages
+# Multiple languages
 
 ## Features:
 - [ ] Change language by session

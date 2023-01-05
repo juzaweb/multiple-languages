@@ -1,20 +1,17 @@
 {
-    "name": "juzaweb/multilang",
+    "name": "juzaweb/multiple-language",
     "description": "",
     "extra": {
         "laravel": {
             "providers": [
-                "Juzaweb\\Multilang\\Providers\\AutoloadServiceProvider"
+                "Juzaweb\\Multilang\\Providers\\MultilangServiceProvider"
             ]
         },
         "juzaweb": {
-            "name": "juzaweb/multilang",
-            "domain": "mlla",
-            "cms_min": "1.0.9",
-            "version": "1.0",
-            "providers": [
-                "Juzaweb\\Multilang\\Providers\\MultilangServiceProvider"
-            ]
+            "name": "juzaweb/multiple-language",
+            "domain": "multilang",
+            "cms_min": "3.3",
+            "version": "1.0"
         }
     },
     "autoload": {

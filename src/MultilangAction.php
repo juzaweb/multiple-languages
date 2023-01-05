@@ -18,7 +18,7 @@ class MultilangAction extends Action
     public function addBackendMenu()
     {
         HookAction::addAdminMenu(
-            trans('mlla::content.multi_language'),
+            trans('multilang::content.multi_language'),
             'multi_language',
             [
                 'icon' => 'fa fa-language',
@@ -61,7 +61,7 @@ class MultilangAction extends Action
         });
 
         echo e(view(
-            'mlla::select_lang',
+            'multilang::select_lang',
             compact(
                 'model',
                 'languages',
