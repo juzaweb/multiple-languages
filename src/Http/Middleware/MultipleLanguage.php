@@ -25,10 +25,9 @@ class MultipleLanguage
         
         $type = get_config('mlla_type', 'session');
         if ($type == 'session') {
-            $locale = $request->get('locale');
+            $locale = $request->get('hl');
             if ($locale) {
                 $this->setLocaleSession($locale);
-                return redirect()->back();
             }
         }
         
@@ -58,6 +57,7 @@ class MultipleLanguage
     
         if ($type == 'prefix') {
             $locale = $request->route('locale');
+            $request->route()->forgetParameter('locale');
             if ($locale) {
                 return $locale;
             }

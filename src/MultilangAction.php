@@ -14,7 +14,7 @@ class MultilangAction extends Action
         //$this->addAction(Action::POSTS_FORM_RIGHT_ACTION, [$this, 'addSelectLangPost'], 5);
         $this->addAction(Action::INIT_ACTION, [$this, 'addConfigs']);
     }
-
+    
     public function addBackendMenu()
     {
         HookAction::addAdminMenu(
@@ -22,21 +22,21 @@ class MultilangAction extends Action
             'multi_language',
             [
                 'icon' => 'fa fa-language',
-                'position' => 30,
+                'position' => 50,
             ]
         );
-
+        
         HookAction::registerAdminPage(
             'languages',
             [
                 'title' => trans('cms::app.language'),
                 'menu' => [
-                    'position' => 3,
-                    'parent' => 'multi_language',
-                ]
+                    'position' => 10,
+                    'parent' => 'managements',
+                ],
             ]
         );
-
+        
         HookAction::registerAdminPage(
             'multi-language.setting',
             [
@@ -45,31 +45,35 @@ class MultilangAction extends Action
                     'icon' => 'fa fa-cog',
                     'position' => 3,
                     'parent' => 'multi_language',
-                ]
+                ],
             ]
         );
     }
-
+    
     public function addSelectLangPost($model)
     {
         $default = get_config('language', 'en');
         $selected = $default;
-        $languages = Language::get()->mapWithKeys(function ($item) {
-            return [
-                $item->code => $item->name
-            ];
-        });
-
-        echo e(view(
-            'multilang::select_lang',
-            compact(
-                'model',
-                'languages',
-                'selected'
+        $languages = Language::get()->mapWithKeys(
+            function ($item) {
+                return [
+                    $item->code => $item->name,
+                ];
+            }
+        );
+        
+        echo e(
+            view(
+                'multilang::select_lang',
+                compact(
+                    'model',
+                    'languages',
+                    'selected'
+                )
             )
-        ));
+        );
     }
-
+    
     public function addConfigs()
     {
         HookAction::registerConfig(['mlla_type', 'mlla_subdomain']);

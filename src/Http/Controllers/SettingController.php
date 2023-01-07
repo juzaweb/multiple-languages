@@ -9,15 +9,11 @@ use Illuminate\Support\Str;
 use Juzaweb\Backend\Http\Controllers\Backend\PageController;
 use Juzaweb\CMS\Models\Language;
 use Juzaweb\Multilang\Http\Requests\SaveSettingRequest;
-use Juzaweb\Network\Contracts\NetworkRegistionContract;
+use Juzaweb\Network\Facades\Network;
 use Juzaweb\Network\Models\DomainMapping;
 
 class SettingController extends PageController
 {
-    public function __construct(protected NetworkRegistionContract $networkRegistion)
-    {
-    }
-    
     public function index(): \Illuminate\Contracts\View\View
     {
         $title = trans('cms::app.setting');
@@ -70,7 +66,7 @@ class SettingController extends PageController
             set_config('mlla_subdomain', $subdomain);
 
             if (config('network.enable')) {
-                $siteId = $this->networkRegistion->getCurrentSiteId();
+                $siteId = Network::getCurrentSiteId();
                 
                 DomainMapping::where(
                     [

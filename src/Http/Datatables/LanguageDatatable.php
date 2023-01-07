@@ -2,16 +2,16 @@
 
 namespace Juzaweb\Multilang\Http\Datatables;
 
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Juzaweb\CMS\Abstracts\DataTable;
 use Juzaweb\CMS\Models\Language;
 
 class LanguageDatatable extends DataTable
 {
-    protected $sortName = 'default';
-
-    public function columns()
+    protected string $sortName = 'default';
+    
+    public function columns(): array
     {
         return [
             'name' => [
@@ -25,8 +25,8 @@ class LanguageDatatable extends DataTable
                     return '<input 
                     type="radio" 
                     class="form-control" 
-                    name="default" '. ($value == 1 ? 'checked': '') .' 
-                    value="'. $row->code .'">';
+                    name="default" '.($value == 1 ? 'checked' : '').'
+                    value="'.$row->code.'">';
                 },
             ],
             'created_at' => [
@@ -39,8 +39,8 @@ class LanguageDatatable extends DataTable
             ],
         ];
     }
-
-    public function rowAction($row)
+    
+    public function rowAction($row): array
     {
         return [
             'delete' => [
@@ -50,47 +50,49 @@ class LanguageDatatable extends DataTable
             ],
         ];
     }
-
+    
     /**
      * Query data datatable
      *
-     * @param array $data
+     * @param  array  $data
      * @return Builder
      */
-    public function query($data)
+    public function query($data): Builder
     {
         $query = Language::query();
         if ($keyword = Arr::get($data, 'keyword')) {
-            $query->where(function (Builder $q) use ($keyword) {
-                $q->where('name', 'like', $keyword);
-                $q->orWhere('code', 'like', $keyword);
-            });
+            $query->where(
+                function (Builder $q) use ($keyword) {
+                    $q->where('name', 'like', $keyword);
+                    $q->orWhere('code', 'like', $keyword);
+                }
+            );
         }
-
+        
         return $query;
     }
-
+    
     public function bulkActions($action, $ids)
     {
         $count = Language::count(['id']);
         if ($count <= 1) {
             return;
         }
-
+        
         switch ($action) {
             case 'delete':
                 foreach ($ids as $id) {
                     $isDefault = Language::where('id', '=', $id)
                         ->where('default', '=', true)
                         ->exists();
-
+                    
                     if ($isDefault) {
                         continue;
                     }
-
+                    
                     Language::destroy([$id]);
                 }
-
+                
                 break;
         }
     }

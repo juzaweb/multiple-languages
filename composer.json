@@ -1,6 +1,6 @@
 {
-    "name": "juzaweb/multiple-language",
-    "description": "",
+    "name": "juzaweb/multilingual",
+    "description": "Experience a better way to translate your Website and go multilingual, directly from the front-end using a visual translation interface.",
     "extra": {
         "laravel": {
             "providers": [
@@ -8,7 +8,7 @@
             ]
         },
         "juzaweb": {
-            "name": "juzaweb/multiple-language",
+            "name": "Multilingual",
             "domain": "multilang",
             "cms_min": "3.3",
             "version": "1.0"
