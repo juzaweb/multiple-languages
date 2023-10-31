@@ -1,5 +1,7 @@
 {
     "name": "juzaweb/multiple-languages",
+    "type": "juzaweb-plugin",
+    "license": "MIT",
     "description": "Multiple Languages support for Juzaweb CMS",
     "extra": {
         "juzaweb": {
