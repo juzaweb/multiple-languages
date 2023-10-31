@@ -2,6 +2,18 @@
     "name": "juzaweb/multiple-languages",
     "type": "juzaweb-plugin",
     "license": "MIT",
+    "homepage": "https://juzaweb.com",
+    "keywords": [
+        "framework",
+        "laravel",
+        "laravel cms",
+        "laravel cms like wordpress",
+        "cms like wordpress",
+        "juzaweb",
+        "juzacms",
+        "juzaweb multiple languages",
+        "juzaweb plugin"
+    ],
     "description": "Multiple Languages support for Juzaweb CMS",
     "extra": {
         "juzaweb": {

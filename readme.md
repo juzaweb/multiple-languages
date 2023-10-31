@@ -1,4 +1,6 @@
-# Multi languages
+# Multiple languages
+
+- Plugin support multiple language for Juzaweb CMS
 
 ## Features:
 - [x] Change language by session
