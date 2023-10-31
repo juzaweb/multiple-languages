@@ -1,4 +1,4 @@
-{{ Field::select($model, 'lang', [
+{{ Field::select($model, 'locale', [
     'options' => $languages,
-    'value' => $selected
+    'value' => $selected,
 ]) }}

@@ -2,16 +2,16 @@
 
 namespace Juzaweb\Multilang\Http\Datatables;
 
-use Illuminate\Database\Query\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Juzaweb\CMS\Abstracts\DataTable;
 use Juzaweb\CMS\Models\Language;
 
 class LanguageDatatable extends DataTable
 {
-    protected $sortName = 'default';
+    protected string $sortName = 'default';
 
-    public function columns()
+    public function columns(): array
     {
         return [
             'name' => [
@@ -22,10 +22,10 @@ class LanguageDatatable extends DataTable
                 'label' => trans('cms::app.default'),
                 'width' => '15%',
                 'formatter' => function ($value, $row, $index) {
-                    return '<input 
-                    type="radio" 
-                    class="form-control" 
-                    name="default" '. ($value == 1 ? 'checked': '') .' 
+                    return '<input
+                    type="radio"
+                    class="form-control"
+                    name="default" '. ($value == 1 ? 'checked': '') .'
                     value="'. $row->code .'">';
                 },
             ],
@@ -40,7 +40,7 @@ class LanguageDatatable extends DataTable
         ];
     }
 
-    public function rowAction($row)
+    public function rowAction(mixed $row): array
     {
         return [
             'delete' => [
@@ -57,7 +57,7 @@ class LanguageDatatable extends DataTable
      * @param array $data
      * @return Builder
      */
-    public function query($data)
+    public function query($data): Builder
     {
         $query = Language::query();
         if ($keyword = Arr::get($data, 'keyword')) {
@@ -70,7 +70,7 @@ class LanguageDatatable extends DataTable
         return $query;
     }
 
-    public function bulkActions($action, $ids)
+    public function bulkActions(string $action, array $ids): void
     {
         $count = Language::count(['id']);
         if ($count <= 1) {

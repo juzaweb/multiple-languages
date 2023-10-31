@@ -5,7 +5,7 @@
         <div class="col-md-4"></div>
 
         @php
-            $type = get_config('mlla_type', 'session');
+            $type = get_config('mlla_type');
         @endphp
 
         <div class="col-md-8">
@@ -13,8 +13,9 @@
                 {{ Field::select(trans('cms::app.type'), 'mlla_type', [
                     'value' => $type,
                     'options' => [
-                        'session' => trans('mlla::content.session'),
-                        'subdomain' => trans('mlla::content.sub_domain'),
+                        '' => '-----',
+                        'session' => trans('cms::app.multilingual_settings.session'),
+                        'subdomain' => trans('cms::app.multilingual_settings.sub_domain'),
                     ],
                 ]) }}
 
@@ -30,13 +31,13 @@
                         <tbody>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <a href="javascript:void(0)" id="add-subdomain">{{ trans('mlla::content.add_subdomain') }}</a>
+                                    <a href="javascript:void(0)" id="add-subdomain">{{ trans('cms::app.multilingual_settings.add_subdomain') }}</a>
                                 </td>
                             </tr>
 
                             @foreach($subdomains as $subdomain)
                                 @component('mlla::components.subdomain_item', [
-                                    'marker' => '{marker}',
+                                    'marker' => $subdomain['sub'],
                                     'languages' => $languages,
                                     'item' => $subdomain,
                                 ])
@@ -74,6 +75,11 @@
             let temp = document.getElementById('subdomain-template').innerHTML;
             let marker = (new Date()).getTime();
             $('#subdomain-table tbody').append(replace_template(temp, {marker: marker}));
+        });
+
+        $(document).on('change', '.select-language', function () {
+            let val = $(this).val();
+            $(this).closest('tr').find('.sub-domain').val(val);
         });
     </script>
 @endsection

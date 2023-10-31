@@ -11,7 +11,7 @@
 
     {{ $dataTable->render() }}
 
-    <div class="modal fade" id="add-language-modal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="add-language-modal" role="dialog">
         <div class="modal-dialog" role="document">
             <form action="" method="post" class="form-ajax" data-success="add_language_success">
                 <div class="modal-content">

@@ -1,8 +1,8 @@
 # Multi languages
 
 ## Features:
-- [ ] Change language by session
-- [ ] Subdomain language
+- [x] Change language by session
+- [x] Subdomain language
 - [ ] Multi Language posts
 - [ ] Multi language taxonomy
 - [ ] Multi language menu items

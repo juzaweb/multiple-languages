@@ -9,7 +9,7 @@ use Juzaweb\CMS\Models\Language;
 
 class LanguageController extends PageController
 {
-    public function index()
+    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         $title = trans('cms::app.languages');
         $dataTable = new LanguageDatatable();
@@ -20,7 +20,7 @@ class LanguageController extends PageController
         ));
     }
 
-    public function addLanguage(Request $request)
+    public function addLanguage(Request $request): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
     {
         $locales = config('locales');
         $supported = array_keys($locales);
@@ -45,12 +45,12 @@ class LanguageController extends PageController
 
         return $this->success(
             [
-                'message' => trans('juzaweb::app.add_language_successfull'),
+                'message' => trans('cms::app.add_language_successfull'),
             ]
         );
     }
 
-    public function toggleDefault($code)
+    public function toggleDefault($code): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
     {
         Language::setDefault($code);
 

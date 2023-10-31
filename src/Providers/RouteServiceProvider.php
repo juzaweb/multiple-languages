@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    public function map()
+    public function map(): void
     {
         $this->mapAdminRoutes();
     }
 
-    protected function mapAdminRoutes()
+    protected function mapAdminRoutes(): void
     {
         Route::middleware('admin')
             ->prefix(config('juzaweb.admin_prefix'))
