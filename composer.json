@@ -1,17 +1,10 @@
 {
     "name": "juzaweb/multiple-languages",
-    "description": "",
+    "description": "Multiple Languages support for Juzaweb CMS",
     "extra": {
-        "laravel": {
-            "providers": [
-                "Juzaweb\\Multilang\\Providers\\AutoloadServiceProvider"
-            ]
-        },
         "juzaweb": {
-            "name": "juzaweb/multilang",
+            "name": "Multiple Languages",
             "domain": "mlla",
-            "cms_min": "1.0.9",
-            "version": "1.0",
             "providers": [
                 "Juzaweb\\Multilang\\Providers\\MultilangServiceProvider"
             ]
@@ -21,5 +14,9 @@
         "psr-4": {
             "Juzaweb\\Multilang\\": "src/"
         }
+    },
+    "require-dev": {
+        "juzaweb/modules": "^1.0",
+        "juzaweb/dev-tool": "^1.0"
     }
 }
