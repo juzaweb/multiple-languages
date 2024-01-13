@@ -2,6 +2,10 @@
 
 namespace Juzaweb\Multilang\Http\Controllers;
 
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Juzaweb\Backend\Http\Controllers\Backend\PageController;
 use Juzaweb\Multilang\Http\Datatables\LanguageDatatable;
@@ -9,7 +13,7 @@ use Juzaweb\CMS\Models\Language;
 
 class LanguageController extends PageController
 {
-    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function index(): Factory|View
     {
         $title = trans('cms::app.languages');
         $dataTable = new LanguageDatatable();
@@ -20,7 +24,7 @@ class LanguageController extends PageController
         ));
     }
 
-    public function addLanguage(Request $request): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    public function addLanguage(Request $request): JsonResponse|RedirectResponse
     {
         $locales = config('locales');
         $supported = array_keys($locales);
@@ -50,7 +54,7 @@ class LanguageController extends PageController
         );
     }
 
-    public function toggleDefault($code): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    public function toggleDefault($code): JsonResponse|RedirectResponse
     {
         Language::setDefault($code);
 
