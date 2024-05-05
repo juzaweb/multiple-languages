@@ -17,23 +17,26 @@ class MultilangAction extends Action
         $this->addAction(Action::INIT_ACTION, [$this, 'addConfigs']);
         $this->addFilter('post.withFrontendDefaults', [$this, 'addFrontendWithDefaults']);
         $this->addFilter('post-type.get-attribute', [$this, 'getPostAttribute'], 20, 3);
-        //$this->addFilter('post_type.parseDataForSave', [$this, 'parseDataPostForSave']);
-        //$this->addAction('post_types.after_save', [$this, 'parseDataPostForSave']);
-        //$this->addFilter('post.selectFrontendBuilder', [$this, 'changeFrontendQueryBuilder']);
-        //$this->addAction('frontend.post_type.posts.detail.post', [$this, 'showPostDetailFrontend']);
+        $this->addFilter('post.selectFrontendBuilder', [$this, 'changeFrontendQueryBuilder']);
+        $this->addFilter('post_type.getDataForForm', [$this, 'getPostDataForForm']);
+        $this->addAction('frontend.post_type.detail.post', [$this, 'showPostDetailFrontend']);
     }
 
     public function showPostDetailFrontend(Post $post): void
     {
-        if (get_config('mlla_type') && $locale = app()->getLocale()) {
-            abort_if($post->locale !== $locale, 404);
+        if (!is_home_page($post) && get_config('mlla_type') && ($locale = app()->getLocale())) {
+            abort_if($locale != Language::default()->code && $post->translations->where('locale', $locale)->isEmpty(), 404);
         }
     }
 
     public function changeFrontendQueryBuilder($builder)
     {
-        if (get_config('mlla_type') && $locale = app()->getLocale()) {
-            $builder->where('locale', $locale);
+        if (get_config('mlla_type') && ($locale = app()->getLocale()) && $locale != Language::default()->code) {
+            $builder->join(
+                'post_translations',
+                fn ($on) => $on->on('posts.id', '=', 'post_translations.post_id')
+                    ->where('post_translations.locale', $locale)
+            );
         }
 
         return $builder;
@@ -118,5 +121,18 @@ class MultilangAction extends Action
         }
 
         return $post->translations->where('locale', $locale)->first()[$key] ?? $value;
+    }
+
+    public function getPostDataForForm($data)
+    {
+        $locale = request()?->get('locale', Language::default()?->code);
+
+        if ($locale != Language::default()?->code) {
+            $data['model']->fill(
+                $data['model']->translations()->where('locale', $locale)->first()->toArray()
+            );
+        }
+
+        return $data;
     }
 }
