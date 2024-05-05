@@ -3,7 +3,6 @@
 namespace Juzaweb\Multilang\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;

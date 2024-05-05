@@ -13,6 +13,9 @@ namespace Juzaweb\Multilang\Facades;
 use Illuminate\Support\Facades\Facade;
 use Juzaweb\Multilang\Contracts\Locale as LocaleContract;
 
+/**
+ * @method static setLocale()
+ */
 class Locale extends Facade
 {
     /**

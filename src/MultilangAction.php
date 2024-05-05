@@ -14,8 +14,8 @@ class MultilangAction extends Action
         $this->addAction(Action::BACKEND_INIT, [$this, 'addBackendMenu']);
         $this->addAction(Action::POSTS_FORM_RIGHT_ACTION, [$this, 'addSelectLangPost'], 5);
         $this->addAction(Action::INIT_ACTION, [$this, 'addConfigs']);
-        $this->addFilter('post.selectFrontendBuilder', [$this, 'changeFrontendQueryBuilder']);
-        $this->addAction('frontend.post_type.posts.detail.post', [$this, 'showPostDetailFrontend']);
+        //$this->addFilter('post.selectFrontendBuilder', [$this, 'changeFrontendQueryBuilder']);
+        //$this->addAction('frontend.post_type.posts.detail.post', [$this, 'showPostDetailFrontend']);
     }
 
     public function showPostDetailFrontend(Post $post): void
