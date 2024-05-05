@@ -1,6 +1,6 @@
 <?php
 
-namespace Juzaweb\Multilang;
+namespace Juzaweb\Multilang\Actions;
 
 use Juzaweb\Backend\Models\Post;
 use Juzaweb\CMS\Abstracts\Action;
@@ -11,7 +11,7 @@ class MultilangAction extends Action
 {
     public function handle(): void
     {
-        $this->addAction(Action::BACKEND_INIT, [$this, 'addBackendMenu']);
+        $this->addAction(Action::BACKEND_INIT, [$this, 'adminActions']);
         $this->addAction(Action::POSTS_FORM_RIGHT_ACTION, [$this, 'addSelectLangPost'], 5);
         $this->addAction(Action::INIT_ACTION, [$this, 'addConfigs']);
         //$this->addFilter('post.selectFrontendBuilder', [$this, 'changeFrontendQueryBuilder']);
@@ -34,7 +34,7 @@ class MultilangAction extends Action
         return $builder;
     }
 
-    public function addBackendMenu(): void
+    public function adminActions(): void
     {
         HookAction::registerAdminPage(
             'multilingual',
@@ -57,19 +57,20 @@ class MultilangAction extends Action
                 ]
             ]
         );
+
+        $this->enqueueScript(
+            'mlla',
+            plugin_asset('js/select-language.min.js', 'juzaweb/multiple-languages'),
+            '1.0',
+            true
+        );
     }
 
     public function addSelectLangPost($model): void
     {
         $default = get_config('language', 'en');
-        $selected = $model->locale ?? $default;
-        $languages = Language::get()->mapWithKeys(
-            function ($item) {
-                return [
-                    $item->code => $item->name
-                ];
-            }
-        );
+        $selected = request()?->get('locale') ?? $default;
+        $languages = Language::languages()->pluck('name', 'code');
 
         echo e(
             view(
