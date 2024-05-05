@@ -14,6 +14,7 @@
                     'value' => $type,
                     'options' => [
                         '' => '-----',
+                        'prefix' => trans('mlla::content.prefix'),
                         'session' => trans('cms::app.multilingual_settings.session'),
                         'subdomain' => trans('cms::app.multilingual_settings.sub_domain'),
                     ],

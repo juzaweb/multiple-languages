@@ -5,7 +5,12 @@
         <div class="col-md-6"></div>
 
         <div class="col-md-6 text-right">
-            <a href="javascript:void(0)" class="btn btn-success" data-toggle="modal" data-target="#add-language-modal"><i class="fa fa-plus"></i> {{ trans('cms::app.add_language') }}</a>
+            <a href="javascript:void(0)"
+               class="btn btn-success"
+               data-toggle="modal"
+               data-target="#add-language-modal">
+                <i class="fa fa-plus"></i> {{ trans('cms::app.add_language') }}
+            </a>
         </div>
     </div>
 

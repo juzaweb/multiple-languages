@@ -5,4 +5,5 @@ return [
     'add_subdomain' => 'Add subdomain',
     'sub_domain' => 'Subdomain',
     'session' => 'Session',
+    'prefix' => 'Prefix',
 ];

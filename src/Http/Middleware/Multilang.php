@@ -8,31 +8,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cookie;
+use Juzaweb\CMS\Contracts\ConfigContract;
 use Juzaweb\CMS\Models\Language;
 
 class Multilang
 {
-    private UrlGenerator $url;
+    private ConfigContract $config;
 
-    public function __construct(UrlGenerator $url)
+    public function __construct(ConfigContract $config)
     {
-        $this->url = $url;
+        $this->config = $config;
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @param Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next): mixed
+    public function handle(Request $request, Closure $next): mixed
     {
-        /*$this->url->defaults(
-            [
-                'locale' => $request->getHost(),
-            ]
-        );*/
+        $type = $this->config->getConfig('mlla_type');
 
-        $type = get_config('mlla_type');
         if ($type == 'session') {
             $locale = $request->get('hl');
             if ($locale) {
@@ -54,9 +50,19 @@ class Multilang
 
     protected function getLocaleByRequest(Request $request, ?string $type)
     {
+        if ($type == 'prefix') {
+            $locale = $request->segment(1);
+
+            if ($locale && in_array($locale, $this->getSupportLanguages())) {
+                return $locale;
+            }
+
+            return Language::default()?->code;
+        }
+
         if ($type == 'session') {
             // Exclude bots
-            if (str_contains(strtolower($request->userAgent()), 'bot')) {
+            if (is_bot_request()) {
                 return false;
             }
 
@@ -83,7 +89,7 @@ class Multilang
                 return $domain['language'];
             }
 
-            return Language::cacheFor(86400)->where(['default' => true])->first()->code;
+            return Language::default()?->code;
         }
 
         return false;
@@ -114,6 +120,6 @@ class Multilang
 
     protected function getSupportLanguages(): array
     {
-        return Language::cacheFor(3600)->get(['code'])->pluck('code')->toArray();
+        return Language::languages()->keys()->toArray();
     }
 }

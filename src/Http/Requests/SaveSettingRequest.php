@@ -19,11 +19,11 @@ class SaveSettingRequest extends FormRequest
         return [
             'mlla_type' => [
                 'required',
-                'in:session,subdomain'
+                'in:session,subdomain,prefix'
             ],
             'mlla_subdomain' => [
                 'required_if:mlla_type,==,subdomain',
-                'array'
+                'array',
             ],
         ];
     }
