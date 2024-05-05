@@ -27,7 +27,10 @@
     "autoload": {
         "psr-4": {
             "Juzaweb\\Multilang\\": "src/"
-        }
+        },
+        "files": [
+            "src/Helpers/helpers.php"
+        ]
     },
     "require-dev": {
         "juzaweb/modules": "^1.0",
