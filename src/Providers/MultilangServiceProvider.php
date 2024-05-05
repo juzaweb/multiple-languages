@@ -13,6 +13,7 @@ use Juzaweb\Multilang\Contracts\Locale;
 use Juzaweb\Multilang\Http\Middleware\Multilang;
 use Juzaweb\Multilang\Models\PostTranslation;
 use Juzaweb\Multilang\Models\TaxonomyTranslation;
+use Juzaweb\Multilang\Observers\PostObserver;
 
 class MultilangServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,8 @@ class MultilangServiceProvider extends ServiceProvider
         $this->app['config']->set('theme.route_prefix', \Juzaweb\Multilang\Facades\Locale::setLocale());
 
         $this->addTaxonomyRelationship();
+
+        Post::observe(PostObserver::class);
     }
 
     public function register(): void

@@ -14,12 +14,12 @@ class AddIsPluginToDomainMappingsTable extends Migration
      */
     public function up()
     {
-        Schema::table(
-            'domain_mappings',
-            function (Blueprint $table) {
-                $table->string('plugin', 50)->nullable();
-            }
-        );
+        // Schema::table(
+        //     'domain_mappings',
+        //     function (Blueprint $table) {
+        //         $table->string('plugin', 50)->nullable();
+        //     }
+        // );
     }
 
     /**

@@ -25,6 +25,7 @@ class PostTranslation extends Model
         'thumbnail',
         'slug',
         'locale',
+        'post_id',
     ];
 
     public function post(): BelongsTo
