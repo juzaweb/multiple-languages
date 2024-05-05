@@ -6,6 +6,7 @@ use Juzaweb\Backend\Models\Post;
 use Juzaweb\CMS\Abstracts\Action;
 use Juzaweb\CMS\Facades\HookAction;
 use Juzaweb\CMS\Models\Language;
+use Juzaweb\Multilang\Models\PostTranslation;
 
 class MultilangAction extends Action
 {
@@ -14,6 +15,8 @@ class MultilangAction extends Action
         $this->addAction(Action::BACKEND_INIT, [$this, 'adminActions']);
         $this->addAction(Action::POSTS_FORM_RIGHT_ACTION, [$this, 'addSelectLangPost'], 5);
         $this->addAction(Action::INIT_ACTION, [$this, 'addConfigs']);
+        $this->addFilter('post.withFrontendDefaults', [$this, 'addFrontendWithDefaults']);
+        $this->addFilter('post-type.get-attribute', [$this, 'getPostAttribute'], 20, 3);
         //$this->addFilter('post_type.parseDataForSave', [$this, 'parseDataPostForSave']);
         //$this->addAction('post_types.after_save', [$this, 'parseDataPostForSave']);
         //$this->addFilter('post.selectFrontendBuilder', [$this, 'changeFrontendQueryBuilder']);
@@ -89,5 +92,31 @@ class MultilangAction extends Action
     public function addConfigs(): void
     {
         HookAction::registerConfig(['mlla_type', 'mlla_subdomain']);
+    }
+
+    public function addFrontendWithDefaults(array $with): array
+    {
+        $locale = app()->getLocale();
+
+        if ($locale != Language::default()?->code) {
+            $with['translations'] = fn ($q) => $q->where('locale', $locale);
+        }
+
+        return $with;
+    }
+
+    public function getPostAttribute($value, Post $post, string $key)
+    {
+        if (!in_array($key, (new PostTranslation)->getFillable())) {
+            return $value;
+        }
+
+        $locale = app()->getLocale();
+
+        if ($locale == Language::default()?->code) {
+            return $value;
+        }
+
+        return $post->translations->where('locale', $locale)->first()[$key] ?? $value;
     }
 }

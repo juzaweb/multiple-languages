@@ -19,7 +19,7 @@ class PostObserver
 {
     protected static array $translationFileds;
 
-    public function saving(Model $model)
+    public function saving(Model $model): void
     {
         if ($model->locale == Language::default()?->code) {
             return;
@@ -35,7 +35,7 @@ class PostObserver
         }
     }
 
-    public function saved(Model $model)
+    public function saved(Model $model): void
     {
         if (!isset(self::$translationFileds)) {
             return;

@@ -61,5 +61,10 @@ class MultilangServiceProvider extends ServiceProvider
                 return $this->hasMany(PostTranslation::class, 'post_id', 'id');
             }
         );
+
+        // Taxonomy::addGlobalScope('translations', function ($query) {
+        //     /** @var Taxonomy $query */
+        //     $query->with('translations');
+        // });
     }
 }
