@@ -13,9 +13,12 @@ namespace Juzaweb\Multilang\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Juzaweb\Backend\Models\Post;
 use Juzaweb\CMS\Models\Model;
+use Juzaweb\CMS\Traits\QueryCache\QueryCacheable;
 
 class PostTranslation extends Model
 {
+    use QueryCacheable;
+
     protected $table = 'post_translations';
 
     protected $fillable = [

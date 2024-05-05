@@ -13,9 +13,12 @@ namespace Juzaweb\Multilang\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Juzaweb\Backend\Models\Taxonomy;
 use Juzaweb\CMS\Models\Model;
+use Juzaweb\CMS\Traits\QueryCache\QueryCacheable;
 
 class TaxonomyTranslation extends Model
 {
+    use QueryCacheable;
+
     protected $table = 'taxonomy_translations';
 
     protected $fillable = [

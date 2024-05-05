@@ -15,32 +15,8 @@ class MultilangAction extends Action
         $this->addAction(Action::BACKEND_INIT, [$this, 'adminActions']);
         $this->addAction(Action::POSTS_FORM_RIGHT_ACTION, [$this, 'addSelectLangPost'], 5);
         $this->addAction(Action::INIT_ACTION, [$this, 'addConfigs']);
-        $this->addFilter('post.withFrontendDefaults', [$this, 'addFrontendWithDefaults']);
         $this->addFilter('post-type.get-attribute', [$this, 'getPostAttribute'], 20, 3);
-        $this->addFilter('post.selectFrontendBuilder', [$this, 'changeFrontendQueryBuilder']);
         $this->addFilter('post_type.getDataForForm', [$this, 'getPostDataForForm']);
-        $this->addFilter('frontend.getPostBySlug', [$this, 'getPostBySlug'], 20, 2);
-        $this->addAction('frontend.post_type.detail.post', [$this, 'showPostDetailFrontend']);
-    }
-
-    public function showPostDetailFrontend(Post $post): void
-    {
-        if (!is_home_page($post) && get_config('mlla_type') && ($locale = app()->getLocale())) {
-            abort_if($locale != Language::default()->code && $post->translations->where('locale', $locale)->isEmpty(), 404);
-        }
-    }
-
-    public function changeFrontendQueryBuilder($builder)
-    {
-        if (get_config('mlla_type') && ($locale = app()->getLocale()) && $locale != Language::default()->code) {
-            $builder->join(
-                'post_translations',
-                fn ($on) => $on->on('posts.id', '=', 'post_translations.post_id')
-                    ->where('post_translations.locale', $locale)
-            );
-        }
-
-        return $builder;
     }
 
     public function adminActions(): void
@@ -98,17 +74,6 @@ class MultilangAction extends Action
         HookAction::registerConfig(['mlla_type', 'mlla_subdomain']);
     }
 
-    public function addFrontendWithDefaults(array $with): array
-    {
-        $locale = app()->getLocale();
-
-        if ($locale != Language::default()?->code) {
-            $with['translations'] = fn ($q) => $q->where('locale', $locale);
-        }
-
-        return $with;
-    }
-
     public function getPostAttribute($value, Post $post, string $key)
     {
         if (!in_array($key, (new PostTranslation)->getFillable())) {
@@ -135,22 +100,5 @@ class MultilangAction extends Action
         }
 
         return $data;
-    }
-
-    public function getPostBySlug($post, array $slug)
-    {
-        $locale = app()->getLocale();
-
-        if (empty($post) && $locale != Language::default()->code) {
-            $translation = PostTranslation::where(['slug' => $slug[1], 'locale' => $locale])->first();
-
-            if ($translation) {
-                $post = $translation->post;
-            }
-
-            return $post;
-        }
-
-        return $post;
     }
 }
