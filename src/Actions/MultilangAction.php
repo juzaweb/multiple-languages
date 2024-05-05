@@ -19,6 +19,7 @@ class MultilangAction extends Action
         $this->addFilter('post-type.get-attribute', [$this, 'getPostAttribute'], 20, 3);
         $this->addFilter('post.selectFrontendBuilder', [$this, 'changeFrontendQueryBuilder']);
         $this->addFilter('post_type.getDataForForm', [$this, 'getPostDataForForm']);
+        $this->addFilter('frontend.getPostBySlug', [$this, 'getPostBySlug'], 20, 2);
         $this->addAction('frontend.post_type.detail.post', [$this, 'showPostDetailFrontend']);
     }
 
@@ -134,5 +135,22 @@ class MultilangAction extends Action
         }
 
         return $data;
+    }
+
+    public function getPostBySlug($post, array $slug)
+    {
+        $locale = app()->getLocale();
+
+        if (empty($post) && $locale != Language::default()->code) {
+            $translation = PostTranslation::where(['slug' => $slug[1], 'locale' => $locale])->first();
+
+            if ($translation) {
+                $post = $translation->post;
+            }
+
+            return $post;
+        }
+
+        return $post;
     }
 }
