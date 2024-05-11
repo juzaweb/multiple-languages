@@ -22,6 +22,10 @@ class TaxonomyObserver
 
     public function saving(Model $model): void
     {
+        if (empty($model->locale)) {
+            return;
+        }
+
         self::$translationFileds = [
             'locale' => $model->locale,
             'fileds' => Arr::only($model->getAttributes(), (new TaxonomyTranslation)->getFillable()),
@@ -42,6 +46,10 @@ class TaxonomyObserver
      */
     public function saved(Model $model): void
     {
+        if (!isset(self::$translationFileds)) {
+            return;
+        }
+
         if (!Arr::hasAny(
             self::$translationFileds['fileds'],
             [

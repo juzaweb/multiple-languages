@@ -1,0 +1,15 @@
+name: Run phpunit test suite
+
+on:
+  push:
+  pull_request:
+#  schedule:
+#    - cron: '0 * * * *'
+
+jobs:
+  phpunit-test-suite:
+    uses: juzaweb/actions/.github/workflows/plugin-test.yml@main
+    with:
+      vendor: juzaweb
+      plugin: multiple-languages
+      version: dev-database-multilingual

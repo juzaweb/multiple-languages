@@ -21,6 +21,10 @@ class PostObserver
 
     public function saving(Model $model): void
     {
+        if (empty($model->locale)) {
+            return;
+        }
+
         self::$translationFileds = [
             'locale' => $model->locale,
             'fileds' => Arr::only($model->getAttributes(), (new PostTranslation)->getFillable()),

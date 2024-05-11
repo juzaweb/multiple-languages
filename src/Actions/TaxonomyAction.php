@@ -19,7 +19,7 @@ class TaxonomyAction extends Action
     public function handle(): void
     {
         // Admin actions
-        $this->addAction('taxonomies.form.right', [$this, 'addSelectLangTaxonomy'], 5);
+        $this->addAction('taxonomies.form.left', [$this, 'addSelectLangTaxonomy'], 5);
         $this->addFilter('taxonomy.get-attribute', [$this, 'getTaxonomyAttribute'], 20, 3);
         $this->addFilter('taxonomy.getDataForForm', [$this, 'getTaxonomyDataForForm']);
 
@@ -102,8 +102,8 @@ class TaxonomyAction extends Action
     {
         $locale = app()->getLocale();
 
-        if ($taxonomy && mlla_enable()) {
-            $translation = TaxonomyTranslation::with(['post' => fn ($q) => $q->cacheFor(3600)])
+        if (empty($taxonomy) && mlla_enable()) {
+            $translation = TaxonomyTranslation::with(['taxonomy' => fn ($q) => $q->cacheFor(3600)])
                 ->cacheFor(3600)
                 ->where(['slug' => $slug[1], 'locale' => $locale])
                 ->first();
