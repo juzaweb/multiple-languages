@@ -21,7 +21,7 @@ class FrontendAction extends Action
     {
         // Disable post is not translated
         if (!is_home_page($post) && mlla_enable() && ($locale = app()->getLocale())) {
-            abort_if($post->translations->where('locale', $locale)->isEmpty(), 404);
+            abort_if($post->locale != $locale && $post->translations->where('locale', $locale)->isEmpty(), 404);
         }
     }
 

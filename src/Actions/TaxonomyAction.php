@@ -122,7 +122,10 @@ class TaxonomyAction extends Action
     {
         // Disable post is not translated
         if (mlla_enable() && ($locale = app()->getLocale())) {
-            abort_if($taxonomy->translations->where('locale', $locale)->isEmpty(), 404);
+            abort_if(
+                $taxonomy->locale != $locale && $taxonomy->translations->where('locale', $locale)->isEmpty(),
+                404
+            );
         }
     }
 }
