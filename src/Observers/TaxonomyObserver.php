@@ -21,31 +21,27 @@ class TaxonomyObserver
 
     public function saving(Model $model): void
     {
-        if ($model->locale == Language::default()?->code) {
-            return;
-        }
-
         self::$translationFileds = [
             'locale' => $model->locale,
             'fileds' => Arr::only($model->getAttributes(), (new TaxonomyTranslation)->getFillable()),
         ];
 
-        foreach ((new TaxonomyTranslation)->getFillable() as $item) {
-            $model->offsetUnset($item);
+        if ($model->locale == Language::default()?->code) {
+            $model->offsetUnset('locale');
+        } else {
+            foreach ((new TaxonomyTranslation)->getFillable() as $item) {
+                $model->offsetUnset($item);
+            }
         }
     }
 
     public function saved(Model $model): void
     {
-        if (!isset(self::$translationFileds)) {
-            return;
-        }
-
         if (!Arr::hasAny(
             self::$translationFileds['fileds'],
             [
-                'title',
-                'content',
+                'name',
+                'description',
                 'thumbnail',
             ])
         ) {
@@ -55,7 +51,7 @@ class TaxonomyObserver
         $model->translations()->updateOrCreate(
             [
                 'locale' => self::$translationFileds['locale'],
-                'post_id' => $model->id,
+                'taxonomy_id' => $model->id,
             ],
             self::$translationFileds['fileds']
         );

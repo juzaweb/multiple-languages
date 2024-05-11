@@ -15,6 +15,7 @@ use Juzaweb\Multilang\Http\Middleware\Multilang;
 use Juzaweb\Multilang\Models\PostTranslation;
 use Juzaweb\Multilang\Models\TaxonomyTranslation;
 use Juzaweb\Multilang\Observers\PostObserver;
+use Juzaweb\Multilang\Observers\TaxonomyObserver;
 
 class MultilangServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,7 @@ class MultilangServiceProvider extends ServiceProvider
         $this->addTaxonomyRelationship();
 
         Post::observe(PostObserver::class);
+        Taxonomy::observe(TaxonomyObserver::class);
     }
 
     public function register(): void

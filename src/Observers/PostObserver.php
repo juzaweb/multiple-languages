@@ -26,12 +26,12 @@ class PostObserver
             'fileds' => Arr::only($model->getAttributes(), (new PostTranslation)->getFillable()),
         ];
 
-        foreach ((new PostTranslation)->getFillable() as $item) {
-            $model->offsetUnset($item);
-        }
-
         if ($model->locale == Language::default()?->code) {
             $model->offsetUnset('locale');
+        } else {
+            foreach ((new PostTranslation)->getFillable() as $item) {
+                $model->offsetUnset($item);
+            }
         }
     }
 
