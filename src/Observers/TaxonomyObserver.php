@@ -13,25 +13,25 @@ namespace Juzaweb\Multilang\Observers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Juzaweb\CMS\Models\Language;
-use Juzaweb\Multilang\Models\PostTranslation;
+use Juzaweb\Multilang\Models\TaxonomyTranslation;
 
-class PostObserver
+class TaxonomyObserver
 {
     protected static array $translationFileds;
 
     public function saving(Model $model): void
     {
-        self::$translationFileds = [
-            'locale' => $model->locale,
-            'fileds' => Arr::only($model->getAttributes(), (new PostTranslation)->getFillable()),
-        ];
-
-        foreach ((new PostTranslation)->getFillable() as $item) {
-            $model->offsetUnset($item);
+        if ($model->locale == Language::default()?->code) {
+            return;
         }
 
-        if ($model->locale == Language::default()?->code) {
-            $model->offsetUnset('locale');
+        self::$translationFileds = [
+            'locale' => $model->locale,
+            'fileds' => Arr::only($model->getAttributes(), (new TaxonomyTranslation)->getFillable()),
+        ];
+
+        foreach ((new TaxonomyTranslation)->getFillable() as $item) {
+            $model->offsetUnset($item);
         }
     }
 
@@ -59,9 +59,5 @@ class PostObserver
             ],
             self::$translationFileds['fileds']
         );
-
-        if (!$model->wasChanged()) {
-            $model->touch();
-        }
     }
 }

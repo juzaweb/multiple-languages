@@ -2,6 +2,7 @@
 
 namespace Juzaweb\Multilang\Actions;
 
+use Illuminate\Database\Eloquent\Collection;
 use Juzaweb\Backend\Models\Post;
 use Juzaweb\CMS\Abstracts\Action;
 use Juzaweb\CMS\Facades\HookAction;
@@ -82,7 +83,7 @@ class MultilangAction extends Action
 
         $locale = app()->getLocale();
 
-        if ($locale == Language::default()?->code) {
+        if (!isset($post->translations) || !($post->translations instanceof Collection)) {
             return $value;
         }
 
@@ -93,11 +94,9 @@ class MultilangAction extends Action
     {
         $locale = request()?->get('locale', Language::default()?->code);
 
-        if ($locale != Language::default()?->code) {
-            $data['model']->fill(
-                $data['model']->translations()->where('locale', $locale)->first()->toArray()
-            );
-        }
+        $data['model']->fill(
+            $data['model']->translations()->where('locale', $locale)->firstOrNew()->toArray()
+        );
 
         return $data;
     }

@@ -2,6 +2,7 @@
 
 namespace Juzaweb\Multilang\Actions;
 
+use Illuminate\Database\Eloquent\Builder;
 use Juzaweb\Backend\Models\Post;
 use Juzaweb\CMS\Abstracts\Action;
 use Juzaweb\CMS\Models\Language;
@@ -24,9 +25,9 @@ class FrontendAction extends Action
         }
     }
 
-    public function changeFrontendQueryBuilder($builder)
+    public function changeFrontendQueryBuilder(Builder $builder): Builder
     {
-        if (get_config('mlla_type') && ($locale = app()->getLocale()) && $locale != Language::default()->code) {
+        if (mlla_enable() && ($locale = app()->getLocale())) {
             $builder->join(
                 'post_translations',
                 fn ($on) => $on->on('posts.id', '=', 'post_translations.post_id')
@@ -39,12 +40,10 @@ class FrontendAction extends Action
 
     public function addFrontendWithDefaults(array $with): array
     {
-        $locale = app()->getLocale();
-
-        if ($locale != Language::default()?->code) {
+        if (mlla_enable()) {
             $with['translations'] = fn ($q) => $q
                 ->cacheFor(3600)
-                ->where('locale', $locale);
+                ->where('locale', app()->getLocale());
         }
 
         return $with;
@@ -54,7 +53,7 @@ class FrontendAction extends Action
     {
         $locale = app()->getLocale();
 
-        if (empty($post) && $locale != Language::default()->code) {
+        if (empty($post) && mlla_enable()) {
             $translation = PostTranslation::with(['post' => fn ($q) => $q->cacheFor(3600)])
                 ->cacheFor(3600)
                 ->where(['slug' => $slug[1], 'locale' => $locale])
