@@ -10,12 +10,14 @@ use Juzaweb\CMS\Models\Model;
 use Juzaweb\CMS\Support\ServiceProvider;
 use Juzaweb\Multilang\Actions\FrontendAction;
 use Juzaweb\Multilang\Actions\MultilangAction;
+use Juzaweb\Multilang\Actions\PostAction;
 use Juzaweb\Multilang\Contracts\Locale;
 use Juzaweb\Multilang\Http\Middleware\Multilang;
 use Juzaweb\Multilang\Models\PostTranslation;
 use Juzaweb\Multilang\Models\TaxonomyTranslation;
 use Juzaweb\Multilang\Observers\PostObserver;
 use Juzaweb\Multilang\Observers\TaxonomyObserver;
+use Juzaweb\Multilang\Actions\TaxonomyAction;
 
 class MultilangServiceProvider extends ServiceProvider
 {
@@ -25,7 +27,12 @@ class MultilangServiceProvider extends ServiceProvider
         $router = $this->app['router'];
         $router->pushMiddlewareToGroup('theme', Multilang::class);
 
-        $this->registerHookActions([MultilangAction::class, FrontendAction::class]);
+        $this->registerHookActions([
+            MultilangAction::class,
+            PostAction::class,
+            TaxonomyAction::class,
+            FrontendAction::class,
+        ]);
 
         $this->app['config']->set('theme.route_prefix', \Juzaweb\Multilang\Facades\Locale::setLocale());
 

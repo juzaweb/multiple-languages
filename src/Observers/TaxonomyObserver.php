@@ -12,6 +12,7 @@ namespace Juzaweb\Multilang\Observers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Juzaweb\Backend\Models\Taxonomy;
 use Juzaweb\CMS\Models\Language;
 use Juzaweb\Multilang\Models\TaxonomyTranslation;
 
@@ -35,6 +36,10 @@ class TaxonomyObserver
         }
     }
 
+    /**
+     * @param  Taxonomy  $model
+     * @return void
+     */
     public function saved(Model $model): void
     {
         if (!Arr::hasAny(
@@ -55,5 +60,9 @@ class TaxonomyObserver
             ],
             self::$translationFileds['fileds']
         );
+
+        if (!$model->wasChanged()) {
+            $model->touch();
+        }
     }
 }

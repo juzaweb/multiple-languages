@@ -5,7 +5,6 @@ namespace Juzaweb\Multilang\Actions;
 use Illuminate\Database\Eloquent\Builder;
 use Juzaweb\Backend\Models\Post;
 use Juzaweb\CMS\Abstracts\Action;
-use Juzaweb\CMS\Models\Language;
 use Juzaweb\Multilang\Models\PostTranslation;
 
 class FrontendAction extends Action
@@ -20,8 +19,9 @@ class FrontendAction extends Action
 
     public function showPostDetailFrontend(Post $post): void
     {
-        if (!is_home_page($post) && get_config('mlla_type') && ($locale = app()->getLocale())) {
-            abort_if($locale != Language::default()->code && $post->translations->where('locale', $locale)->isEmpty(), 404);
+        // Disable post is not translated
+        if (!is_home_page($post) && mlla_enable() && ($locale = app()->getLocale())) {
+            abort_if($post->translations->where('locale', $locale)->isEmpty(), 404);
         }
     }
 
